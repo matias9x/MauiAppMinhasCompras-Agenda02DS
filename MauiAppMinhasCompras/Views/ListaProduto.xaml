@@ -2,11 +2,46 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppMinhasCompras.Views.ListaProduto"
-             Title="ListaProduto">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Minhas Compras">
+    <Grid RowDefinitions="Auto,*" Padding="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <SearchBar x:Name="SearchBarProdutos"
+                       Placeholder="Buscar por descrição..."
+                       TextChanged="OnSearchTextChanged" />
+            <Button x:Name="BtnNovo"
+                    Text="+ Novo produto"
+                    Clicked="OnNovoClicked" />
+        </VerticalStackLayout>
+        <CollectionView x:Name="ListaProdutos"
+                        Grid.Row="1"
+                        SelectionMode="Single"
+                        SelectionChanged="OnItemSelecionado">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum produto. Toque em 'Novo produto' para adicionar."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource Gray500}" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="12" Margin="0,4" Stroke="{StaticResource Gray200}" StrokeThickness="1" StrokeShape="Rectangle">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Descricao}"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Resumo}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}" />
+                            <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                   Text="{Binding PrecoFormatado}"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

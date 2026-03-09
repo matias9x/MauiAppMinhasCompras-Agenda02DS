@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using SQLite;   
@@ -12,5 +12,9 @@ public class Produto
         public string? Descricao { get; set; }
         public double Quantidade { get; set; }
         public double Preco { get; set; }
+        [Ignore]
+        public string Resumo => $"{Quantidade:N0} un. × R$ {Preco:N2}";
+        [Ignore]
+        public string PrecoFormatado => $"R$ {(Quantidade * Preco):N2}";
     }
 }

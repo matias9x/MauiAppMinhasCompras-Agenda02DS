@@ -2,11 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppMinhasCompras.Views.EditarProduto"
-             Title="EditarProduto">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Editar produto">
+    <ScrollView Padding="16">
+        <VerticalStackLayout Spacing="16">
+            <Label Text="Descrição" />
+            <Entry x:Name="EntryDescricao" Placeholder="Ex.: Arroz 5kg" />
+            <Label Text="Quantidade" />
+            <Entry x:Name="EntryQuantidade" Placeholder="Ex.: 2" Keyboard="Numeric" />
+            <Label Text="Preço unitário (R$)" />
+            <Entry x:Name="EntryPreco" Placeholder="Ex.: 25,90" Keyboard="Numeric" />
+            <Button x:Name="BtnSalvar" Text="Salvar" Clicked="OnSalvarClicked" />
+            <Button x:Name="BtnExcluir" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="{StaticResource Gray500}" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

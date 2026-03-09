@@ -1,15 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using MauiAppMinhasCompras.Model;
+using Microsoft.Maui.Storage;
 using SQLite;
 
 namespace MauiAppMinhasCompras.Helpers
 {
     public class SQLiteDatabaseHelper
     {
+        static readonly string DbPath = Path.Combine(FileSystem.AppDataDirectory, "minhascompras.db");
+        static SQLiteDatabaseHelper? _instance;
+        public static SQLiteDatabaseHelper Instance => _instance ??= new SQLiteDatabaseHelper(DbPath);
+
         readonly SQLiteAsyncConnection _conn;
-        public SQLiteDatabaseHelper(string path)
+        SQLiteDatabaseHelper(string path)
         {
             _conn = new SQLiteAsyncConnection(path);
             _conn.CreateTableAsync<Produto>().Wait();
@@ -18,16 +23,18 @@ namespace MauiAppMinhasCompras.Helpers
         {
             return _conn.InsertAsync(p);
         }
-        public Task<List<Produto>> Update(Produto p)
+        public Task<int> Update(Produto p)
         {
-            string sql = "UPDATE Produto SET Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
-            return _conn.QueryAsync<Produto>(
-            sql, p.Descricao, p.Quantidade, p.Preco, p.Id
-            );
+            return _conn.UpdateAsync(p);
         }
         public Task<int> Delete(int id)
         {
-            return _conn.Table<Produto>().DeleteAsync(i => i.Id == id);
+            return _conn.DeleteAsync<Produto>(id);
+        }
+        public async Task<Produto?> GetById(int id)
+        {
+            Produto? item = await _conn.Table<Produto>().Where(x => x.Id == id).FirstOrDefaultAsync().ConfigureAwait(false);
+            return item;
         }
         public Task<List<Produto>> GetAll()
         {
