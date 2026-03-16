@@ -1,10 +1,13 @@
 using MauiAppMinhasCompras.Helpers;
 using MauiAppMinhasCompras.Model;
+using System.Collections.ObjectModel;
 
 namespace MauiAppMinhasCompras.Views;
 
 public partial class ListaProduto : ContentPage
 {
+    List<Produto> _listaOriginal = new List<Produto>();
+
     public ListaProduto()
     {
         InitializeComponent();
@@ -16,15 +19,12 @@ public partial class ListaProduto : ContentPage
         CarregarProdutos();
     }
 
-    async void CarregarProdutos(string? busca = null)
+    async void CarregarProdutos()
     {
         try
         {
-            var db = SQLiteDatabaseHelper.Instance;
-            var lista = string.IsNullOrWhiteSpace(busca)
-                ? await db.GetAll()
-                : await db.Search(busca);
-            ListaProdutos.ItemsSource = lista;
+            _listaOriginal = await SQLiteDatabaseHelper.Instance.GetAll();
+            ListaProdutos.ItemsSource = new ObservableCollection<Produto>(_listaOriginal);
         }
         catch (Exception ex)
         {
@@ -34,7 +34,19 @@ public partial class ListaProduto : ContentPage
 
     void OnSearchTextChanged(object? sender, TextChangedEventArgs e)
     {
-        CarregarProdutos(e.NewTextValue);
+        string texto = e.NewTextValue;
+
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            ListaProdutos.ItemsSource = new ObservableCollection<Produto>(_listaOriginal);
+        }
+        else
+        {
+            var filtrado = _listaOriginal
+                .Where(p => p.Descricao.ToLower().Contains(texto.ToLower()))
+                .ToList();
+            ListaProdutos.ItemsSource = new ObservableCollection<Produto>(filtrado);
+        }
     }
 
     async void OnNovoClicked(object? sender, EventArgs e)
