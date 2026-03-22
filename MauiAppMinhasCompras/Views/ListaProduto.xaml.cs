@@ -51,18 +51,19 @@ public partial class ListaProduto : ContentPage
         await Navigation.PushAsync(new NovoProduto());
     }
 
-    async void OnItemSelecionado(object? sender, SelectionChangedEventArgs e)
+    // Botão lápis: abre tela de edição
+    async void OnEditarClicked(object? sender, EventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not Produto p)
-            return;
-        ListaProdutos.SelectedItem = null;
-        await Navigation.PushAsync(new EditarProduto(p.Id));
+        if (sender is Button btn && btn.CommandParameter is Produto p)
+        {
+            await Navigation.PushAsync(new EditarProduto(p.Id));
+        }
     }
 
-    // Menu de contexto: deslize para a esquerda -> Excluir (com confirmacao)
-    async void OnExcluirSwipe(object? sender, EventArgs e)
+    // Botão lixeira: confirmação + exclusão direto na lista
+    async void OnExcluirClicked(object? sender, EventArgs e)
     {
-        if (sender is SwipeItem swipe && swipe.BindingContext is Produto p)
+        if (sender is Button btn && btn.CommandParameter is Produto p)
         {
             bool confirmar = await DisplayAlertAsync("Confirmar", $"Excluir \"{p.Descricao}\"?", "Sim", "Não");
             if (!confirmar) return;

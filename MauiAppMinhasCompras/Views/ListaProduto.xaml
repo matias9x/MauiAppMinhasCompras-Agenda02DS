@@ -14,8 +14,7 @@
         </VerticalStackLayout>
         <CollectionView x:Name="ListaProdutos"
                         Grid.Row="1"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelecionado">
+                        SelectionMode="None">
             <CollectionView.EmptyView>
                 <Label Text="Nenhum produto. Toque em 'Novo produto' para adicionar."
                        HorizontalOptions="Center"
@@ -24,31 +23,50 @@
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Excluir"
-                                           BackgroundColor="Red"
-                                           Invoked="OnExcluirSwipe" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <Border Padding="12" Margin="0,4" Stroke="{StaticResource Gray200}" StrokeThickness="1" StrokeShape="Rectangle">
-                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
-                                <Label Grid.Row="0" Grid.Column="0"
-                                       Text="{Binding Descricao}"
-                                       FontAttributes="Bold"
-                                       LineBreakMode="TailTruncation" />
-                                <Label Grid.Row="1" Grid.Column="0"
-                                       Text="{Binding Resumo}"
-                                       FontSize="12"
-                                       TextColor="{StaticResource Gray500}" />
-                                <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
-                                       Text="{Binding PrecoFormatado}"
-                                       VerticalOptions="Center"
-                                       FontAttributes="Bold" />
-                            </Grid>
-                        </Border>
-                    </SwipeView>
+                    <Border Padding="12" Margin="0,4" Stroke="{StaticResource Gray200}" StrokeThickness="1" StrokeShape="Rectangle">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto">
+
+                            <!-- descrição -->
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Descricao}"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation" />
+
+                            <!-- resumo -->
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Resumo}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}" />
+
+                            <!-- total price -->
+                            <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                   Text="{Binding PrecoFormatado}"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold"
+                                   Margin="0,0,16,0" />
+
+                            <!-- editar -->
+                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                                    Text="✏️"
+                                    BackgroundColor="Transparent"
+                                    FontSize="18"
+                                    Padding="4,0"
+                                    VerticalOptions="Center"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnEditarClicked" />
+
+                            <!-- lixeira -->
+                            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+                                    Text="🗑"
+                                    BackgroundColor="Transparent"
+                                    FontSize="18"
+                                    Padding="4,0"
+                                    VerticalOptions="Center"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnExcluirClicked" />
+
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
