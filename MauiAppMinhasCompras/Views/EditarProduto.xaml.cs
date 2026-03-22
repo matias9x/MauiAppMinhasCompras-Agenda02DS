@@ -66,8 +66,8 @@ public partial class EditarProduto : ContentPage
 
     async void OnExcluirClicked(object? sender, EventArgs e)
     {
-        if (!await DisplayAlertAsync("Confirmar", "Excluir este produto?", "Sim", "Não"))
-            return;
+        bool confirmar = await DisplayAlertAsync("Confirmar", "Deseja excluir este produto?", "Sim", "Não");
+        if (!confirmar) return;
         try
         {
             await SQLiteDatabaseHelper.Instance.Delete(_id);

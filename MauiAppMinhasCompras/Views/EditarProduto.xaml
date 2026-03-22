@@ -11,7 +11,7 @@
             <Entry x:Name="EntryQuantidade" Placeholder="Ex.: 2" Keyboard="Numeric" />
             <Label Text="Preço unitário (R$)" />
             <Entry x:Name="EntryPreco" Placeholder="Ex.: 25,90" Keyboard="Numeric" />
-            <Button x:Name="BtnSalvar" Text="Salvar" Clicked="OnSalvarClicked" />
+            <Button x:Name="BtnSalvar" Text="Atualizar" Clicked="OnSalvarClicked" />
             <Button x:Name="BtnExcluir" Text="Excluir" Clicked="OnExcluirClicked" BackgroundColor="{StaticResource Gray500}" />
         </VerticalStackLayout>
     </ScrollView>

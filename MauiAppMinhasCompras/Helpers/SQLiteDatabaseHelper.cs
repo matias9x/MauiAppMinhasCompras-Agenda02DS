@@ -14,37 +14,58 @@ namespace MauiAppMinhasCompras.Helpers
         public static SQLiteDatabaseHelper Instance => _instance ??= new SQLiteDatabaseHelper(DbPath);
 
         readonly SQLiteAsyncConnection _conn;
+        bool _initialized = false;
+
         SQLiteDatabaseHelper(string path)
         {
             _conn = new SQLiteAsyncConnection(path);
-            _conn.CreateTableAsync<Produto>().Wait();
+            // removi o .wait pra evitar o deadlock, mas isso significa que a tabela só será criada quando o primeiro método for chamado
         }
-        public Task<int> Insert(Produto p)
+
+        async Task EnsureInitializedAsync()
         {
-            return _conn.InsertAsync(p);
+            if (_initialized) return;
+            await _conn.CreateTableAsync<Produto>();
+            _initialized = true;
         }
-        public Task<int> Update(Produto p)
+
+        public async Task<int> Insert(Produto p)
         {
-            return _conn.UpdateAsync(p);
+            await EnsureInitializedAsync();
+            return await _conn.InsertAsync(p);
         }
-        public Task<int> Delete(int id)
+
+        public async Task<int> Update(Produto p)
         {
-            return _conn.DeleteAsync<Produto>(id);
+            await EnsureInitializedAsync();
+            return await _conn.UpdateAsync(p);
         }
+
+        public async Task<int> Delete(int id)
+        {
+            await EnsureInitializedAsync();
+            return await _conn.DeleteAsync<Produto>(id);
+        }
+
         public async Task<Produto?> GetById(int id)
         {
-            Produto? item = await _conn.Table<Produto>().Where(x => x.Id == id).FirstOrDefaultAsync().ConfigureAwait(false);
-            return item;
+            await EnsureInitializedAsync();
+            return await _conn.Table<Produto>().Where(x => x.Id == id).FirstOrDefaultAsync();
         }
-        public Task<List<Produto>> GetAll()
+
+        public async Task<List<Produto>> GetAll()
         {
-            return _conn.Table<Produto>().ToListAsync();
+            await EnsureInitializedAsync();
+            return await _conn.Table<Produto>().ToListAsync();
         }
-        public Task<List<Produto>> Search(string q)
+
+        // Usando LINQ para evitar SQL injection
+        public async Task<List<Produto>> Search(string q)
         {
-            string sql = "SELECT * FROM Produto WHERE descricao LIKE '%" + q + "%'";
-            return _conn.QueryAsync<Produto>(sql);
+            await EnsureInitializedAsync();
+            return await _conn.Table<Produto>()
+                .Where(p => p.Descricao != null && p.Descricao.Contains(q))
+                .ToListAsync();
         }
     }
 }
-        
