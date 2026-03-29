@@ -19,13 +19,14 @@ namespace MauiAppMinhasCompras.Helpers
         SQLiteDatabaseHelper(string path)
         {
             _conn = new SQLiteAsyncConnection(path);
-            // removi o .wait pra evitar o deadlock, mas isso significa que a tabela só será criada quando o primeiro método for chamado
         }
 
         async Task EnsureInitializedAsync()
         {
             if (_initialized) return;
             await _conn.CreateTableAsync<Produto>();
+            // Migração: adiciona coluna DataCadastro se ainda não existir
+            try { await _conn.ExecuteAsync("ALTER TABLE Produto ADD COLUMN DataCadastro TEXT"); } catch { }
             _initialized = true;
         }
 
@@ -59,12 +60,20 @@ namespace MauiAppMinhasCompras.Helpers
             return await _conn.Table<Produto>().ToListAsync();
         }
 
-        // Usando LINQ para evitar SQL injection
         public async Task<List<Produto>> Search(string q)
         {
             await EnsureInitializedAsync();
             return await _conn.Table<Produto>()
                 .Where(p => p.Descricao != null && p.Descricao.Contains(q))
+                .ToListAsync();
+        }
+
+        public async Task<List<Produto>> GetByPeriodo(DateTime inicio, DateTime fim)
+        {
+            await EnsureInitializedAsync();
+            var fimDia = fim.Date.AddDays(1).AddTicks(-1);
+            return await _conn.Table<Produto>()
+                .Where(p => p.DataCadastro >= inicio.Date && p.DataCadastro <= fimDia)
                 .ToListAsync();
         }
     }

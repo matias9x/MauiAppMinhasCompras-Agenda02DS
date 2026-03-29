@@ -26,6 +26,7 @@ public partial class EditarProduto : ContentPage
         EntryDescricao.Text = p.Descricao;
         EntryQuantidade.Text = p.Quantidade.ToString(System.Globalization.CultureInfo.InvariantCulture);
         EntryPreco.Text = p.Preco.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+        DatePickerCadastro.Date = (p.DataCadastro == default) ? DateTime.Today : p.DataCadastro;
     }
 
     async void OnSalvarClicked(object? sender, EventArgs e)
@@ -35,12 +36,18 @@ public partial class EditarProduto : ContentPage
             await DisplayAlertAsync("Atenção", "Informe a descrição.", "OK");
             return;
         }
-        if (!double.TryParse(EntryQuantidade.Text?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var qtd) || qtd <= 0)
+        if (!double.TryParse(EntryQuantidade.Text?.Replace(",", "."),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var qtd) || qtd <= 0)
         {
             await DisplayAlertAsync("Atenção", "Quantidade inválida.", "OK");
             return;
         }
-        if (!double.TryParse(EntryPreco.Text?.Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var preco) || preco < 0)
+        if (!double.TryParse(EntryPreco.Text?.Replace(",", "."),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var preco) || preco < 0)
         {
             await DisplayAlertAsync("Atenção", "Preço inválido.", "OK");
             return;
@@ -52,7 +59,8 @@ public partial class EditarProduto : ContentPage
                 Id = _id,
                 Descricao = EntryDescricao.Text!.Trim(),
                 Quantidade = qtd,
-                Preco = preco
+                Preco = preco,
+                DataCadastro = (DateTime)DatePickerCadastro.Date
             };
             await SQLiteDatabaseHelper.Instance.Update(p);
             await DisplayAlertAsync("Sucesso", "Produto atualizado.", "OK");

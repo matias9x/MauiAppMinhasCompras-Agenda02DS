@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="MauiAppMinhasCompras.Views.NovoProduto"
              Title="Novo produto">
     <ScrollView Padding="16">
@@ -11,6 +12,9 @@
             <Entry x:Name="EntryQuantidade" Placeholder="Ex.: 2" Keyboard="Numeric" />
             <Label Text="Preço unitário (R$)" />
             <Entry x:Name="EntryPreco" Placeholder="Ex.: 25,90" Keyboard="Numeric" />
+            <Label Text="Data da compra" />
+            <DatePicker x:Name="DatePickerCadastro"
+                        Format="dd/MM/yyyy" />
             <Button x:Name="BtnSalvar" Text="Salvar" Clicked="OnSalvarClicked" />
         </VerticalStackLayout>
     </ScrollView>

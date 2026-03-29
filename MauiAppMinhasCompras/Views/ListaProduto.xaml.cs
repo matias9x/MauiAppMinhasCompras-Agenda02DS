@@ -51,7 +51,11 @@ public partial class ListaProduto : ContentPage
         await Navigation.PushAsync(new NovoProduto());
     }
 
-    // Botão lápis: abre tela de edição
+    async void OnRelatorioClicked(object? sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new RelatorioCompras());
+    }
+
     async void OnEditarClicked(object? sender, EventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is Produto p)
@@ -60,7 +64,6 @@ public partial class ListaProduto : ContentPage
         }
     }
 
-    // Botão lixeira: confirmação + exclusão direto na lista
     async void OnExcluirClicked(object? sender, EventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is Produto p)

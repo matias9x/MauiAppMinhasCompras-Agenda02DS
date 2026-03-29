@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppMinhasCompras.Views.RelatorioCompras"
+             Title="Relatório de Compras">
+    <Grid RowDefinitions="Auto,*" Padding="16">
+
+        <!-- Filtro por período -->
+        <Border Grid.Row="0"
+                Padding="12"
+                Margin="0,0,0,12"
+                Stroke="{StaticResource Gray200}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Filtrar por período"
+                       FontAttributes="Bold"
+                       FontSize="15" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Label Text="Data inicial" FontSize="12" TextColor="{StaticResource Gray500}" />
+                        <DatePicker x:Name="DatePickerInicio"
+                                    Format="dd/MM/yyyy" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Data final" FontSize="12" TextColor="{StaticResource Gray500}" />
+                        <DatePicker x:Name="DatePickerFim"
+                                    Format="dd/MM/yyyy" />
+                    </VerticalStackLayout>
+                </Grid>
+                <Button Text="🔍 Buscar"
+                        Clicked="OnBuscarClicked" />
+
+                <!-- Totalizador -->
+                <Border x:Name="PainelTotal"
+                        IsVisible="False"
+                        BackgroundColor="{StaticResource Primary}"
+                        Padding="10"
+                        StrokeShape="RoundRectangle 6"
+                        Stroke="Transparent">
+                    <Label x:Name="LabelTotal"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           FontSize="15" />
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Lista filtrada -->
+        <CollectionView x:Name="ListaRelatorio"
+                        Grid.Row="1"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum produto encontrado no período informado."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource Gray500}" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="12" Margin="0,4"
+                            Stroke="{StaticResource Gray200}"
+                            StrokeThickness="1"
+                            StrokeShape="Rectangle">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Descricao}"
+                                   FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Resumo}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray500}" />
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding DataFormatada, StringFormat='🗓 {0}'}"
+                                   FontSize="11"
+                                   TextColor="{StaticResource Gray400}" />
+                            <Label Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                   Text="{Binding PrecoFormatado}"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
