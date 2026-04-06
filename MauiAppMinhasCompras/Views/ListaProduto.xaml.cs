@@ -56,6 +56,11 @@ public partial class ListaProduto : ContentPage
         await Navigation.PushAsync(new RelatorioCompras());
     }
 
+    async void OnTempoClicked(object? sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TempoAgora());
+    }
+
     async void OnEditarClicked(object? sender, EventArgs e)
     {
         if (sender is Button btn && btn.CommandParameter is Produto p)

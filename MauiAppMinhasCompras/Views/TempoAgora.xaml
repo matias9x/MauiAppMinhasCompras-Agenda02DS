@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppMinhasCompras.Views.TempoAgora"
+             Title="Tempo Agora">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="16">
+
+            <!-- Campo de busca -->
+            <Label Text="Digite o nome da cidade:" FontSize="14" TextColor="{StaticResource Gray500}" />
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Entry x:Name="EntryCity"
+                       Grid.Column="0"
+                       Placeholder="Ex.: São Paulo"
+                       ReturnType="Search"
+                       ReturnCommand="{x:Null}"
+                       Completed="OnBuscarClicked" />
+                <Button Grid.Column="1"
+                        Text="🔍"
+                        FontSize="18"
+                        Clicked="OnBuscarClicked"
+                        WidthRequest="50" />
+            </Grid>
+
+            <!-- Indicador de carregamento -->
+            <ActivityIndicator x:Name="Loading"
+                               IsRunning="False"
+                               IsVisible="False"
+                               HorizontalOptions="Center" />
+
+            <!-- Painel de resultado -->
+            <Border x:Name="PainelResultado"
+                    IsVisible="False"
+                    Padding="20"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="{StaticResource Gray200}"
+                    StrokeThickness="1">
+                <VerticalStackLayout Spacing="12">
+
+                    <!-- Cidade -->
+                    <Label x:Name="LabelCidade"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center" />
+
+                    <!-- Temperatura -->
+                    <Label x:Name="LabelTemperatura"
+                           FontSize="48"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource Primary}" />
+
+                    <!-- Descrição do clima -->
+                    <Label x:Name="LabelDescricao"
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           TextColor="{StaticResource Gray500}" />
+
+                    <!-- Separador -->
+                    <BoxView HeightRequest="1" Color="{StaticResource Gray200}" />
+
+                    <!-- Grid com detalhes -->
+                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" RowSpacing="4">
+
+                        <!-- Umidade -->
+                        <Label Grid.Row="0" Grid.Column="0" Text="💧 Umidade"
+                               FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="LabelUmidade"
+                               Grid.Row="1" Grid.Column="0"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+
+                        <!-- Vento -->
+                        <Label Grid.Row="0" Grid.Column="1" Text="💨 Vento"
+                               FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="LabelVento"
+                               Grid.Row="1" Grid.Column="1"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+
+                        <!-- Visibilidade -->
+                        <Label Grid.Row="0" Grid.Column="2" Text="👁 Visibilidade"
+                               FontSize="12" TextColor="{StaticResource Gray500}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="LabelVisibilidade"
+                               Grid.Row="1" Grid.Column="2"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

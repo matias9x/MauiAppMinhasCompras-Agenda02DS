@@ -8,16 +8,19 @@
             <SearchBar x:Name="SearchBarProdutos"
                        Placeholder="Buscar por descrição..."
                        TextChanged="OnSearchTextChanged" />
-            <Grid ColumnDefinitions="*,Auto">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
                 <Button Grid.Column="0"
                         x:Name="BtnNovo"
                         Text="+ Novo produto"
                         Clicked="OnNovoClicked" />
                 <Button Grid.Column="1"
                         Text="📊 Relatório"
-                        Margin="8,0,0,0"
                         BackgroundColor="{StaticResource Primary}"
                         Clicked="OnRelatorioClicked" />
+                <Button Grid.Column="2"
+                        Text="🌤 Tempo"
+                        BackgroundColor="#0078D4"
+                        Clicked="OnTempoClicked" />
             </Grid>
         </VerticalStackLayout>
         <CollectionView x:Name="ListaProdutos"
@@ -33,33 +36,23 @@
                 <DataTemplate>
                     <Border Padding="12" Margin="0,4" Stroke="{StaticResource Gray200}" StrokeThickness="1" StrokeShape="Rectangle">
                         <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
-
-                            <!-- descrição -->
                             <Label Grid.Row="0" Grid.Column="0"
                                    Text="{Binding Descricao}"
                                    FontAttributes="Bold"
                                    LineBreakMode="TailTruncation" />
-
-                            <!-- resumo -->
                             <Label Grid.Row="1" Grid.Column="0"
                                    Text="{Binding Resumo}"
                                    FontSize="12"
                                    TextColor="{StaticResource Gray500}" />
-
-                            <!-- data -->
                             <Label Grid.Row="2" Grid.Column="0"
                                    Text="{Binding DataFormatada, StringFormat='🗓 {0}'}"
                                    FontSize="11"
                                    TextColor="{StaticResource Gray400}" />
-
-                            <!-- total price -->
                             <Label Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                                    Text="{Binding PrecoFormatado}"
                                    VerticalOptions="Center"
                                    FontAttributes="Bold"
                                    Margin="0,0,16,0" />
-
-                            <!-- editar -->
                             <Button Grid.Row="0" Grid.RowSpan="3" Grid.Column="2"
                                     Text="✏️"
                                     BackgroundColor="Transparent"
@@ -68,8 +61,6 @@
                                     VerticalOptions="Center"
                                     CommandParameter="{Binding .}"
                                     Clicked="OnEditarClicked" />
-
-                            <!-- lixeira -->
                             <Button Grid.Row="0" Grid.RowSpan="3" Grid.Column="3"
                                     Text="🗑"
                                     BackgroundColor="Transparent"
@@ -78,7 +69,6 @@
                                     VerticalOptions="Center"
                                     CommandParameter="{Binding .}"
                                     Clicked="OnExcluirClicked" />
-
                         </Grid>
                     </Border>
                 </DataTemplate>
